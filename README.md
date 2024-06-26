@@ -7,8 +7,18 @@
 ♡ Love
 
 ## Description
-♡ An Otome game I made for my Love Actually class final project! ♡(｡- ω -)
+- An Otome game I made for my Love Actually class final project! ♡(｡- ω -)
 - This game was created for the purpose of teaching others about all the different attachment styles by simulating first dates with a person that emulates each style! This was heavily inspired by Mystic Messenger, a game I loved when I was younger.
+
+## Project Proposal
+- Player will be able to choose between 5 different guys who all fall into different categories of attachment styles and see what love is like through them
+- Player will be able to chat with the guy they choose and see the way different attachment styles affects their blossoming relationship
+- There will be two different endings for each guy - a bad and good ending, which will be chosen by how the player interacts with the character
+- This project will either be in the format of an actual game or will be drawn out and then transformed into slides so all endings can be seen
+- This game is targeted towards young teens who want to explore and see what dating is like with different men
+
+## How does this game connect to my class?
+- This game will provide players with the opportunity to experience and understand how different attachment styles influence romantic relationships. Each character in the game represents a distinct attachment style, such as secure, avoidant, or anxious. Through interactions with these characters, players can observe firsthand how each attachment style manifests in the context of a romantic relationship and how it impacts the dynamics and outcomes. The two different endings for each character further emphasize the significance of the player's interactions and choices, as they directly affect the trajectory and success of the relationship, mirroring the idea in attachment theory that early experiences and behaviors shape the quality and stability of adult relationships. Overall, the game offers an educational and experiential platform for players, particularly young teens, to explore and learn about the complexities of attachment styles in the realm of dating and love.
 
 ## Game Visuals
 
