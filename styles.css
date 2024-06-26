@@ -1,0 +1,186 @@
+@font-face {
+    font-family: 'pinkHearts';
+    src: url('assets/BFCPinkHearts.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'pixel';
+    src: url('assets/MintSoda.ttf') format('opentype');
+}
+
+#body {
+    z-index: 0;
+    overflow-y: hidden;
+}
+
+h1 {
+    font-family: 'pinkHearts';
+    color: #FFA3D6;
+    font-size: 100px;
+    -webkit-text-stroke: 0.3px white;
+    text-shadow: 0 0 20px #FFA3D6;
+    background-color: black;
+    padding: 10px;
+    border: 5px ridge #FFA3D6;
+    border-radius: 15px;
+}
+
+#start {
+    z-index: 50;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+}
+
+#start > p {
+    font-size: 16px;
+    font-family: pixel;
+    color: white;
+    background-color: black;
+    padding: 20px;
+    border: 5px ridge #FFA3D6;
+    border-radius: 15px;
+    width: 50%;
+}
+
+#startGame {
+    font-family: pixel;
+    font-size: 30px;
+    padding: 10px;
+    color: white;
+    background-color: black;
+    border: 5px ridge #FFA3D6;
+    border-radius: 15px;
+    margin-top: 100px;
+}
+
+#startGame:hover {
+    font-size: 50px;
+    color: #FFA3D6;
+}
+
+#start > p:hover {
+    opacity: 80%;
+}
+
+h1:hover {
+    opacity: 80%;
+}
+
+.scenes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+    margin: auto;
+    text-align: left;
+    height: 100vh;
+}
+
+.scenes > p {
+    font-size: 16px;
+    font-family: pixel;
+    color: black;
+    background-color: white;
+    padding: 20px;
+    border: 5px ridge #FFA3D6;
+    border-radius: 15px;
+    width: 50%;
+}
+
+.continue {
+    font-family: pixel;
+    font-size: 20px;
+    text-transform: uppercase;
+    padding: 10px;
+    color: #FFA3D6;
+    background-color: white;
+    border: 5px ridge #FFA3D6;
+    border-radius: 15px;
+    margin-top: 100px;
+}
+
+.continue:hover {
+    font-size: 23px;
+    background-color: black;
+}
+
+.hidden {
+    display: none;
+}
+
+.selectGuy {
+    font-family: pixel;
+    font-size: 20px;
+    color: black;
+    background-color: #FFA3D6;
+    border: 5px ridge white;
+    border-radius: 15px;
+    padding: 10px;
+    text-transform: capitalize;
+    margin: 5px;
+}
+
+.selectGuy:hover {
+    font-size: 23px;
+    background-color: black;
+    color: white;
+    border-color: #FFA3D6;
+}
+
+p {
+    font-size: 16px;
+    font-family: pixel;
+    color: black;
+    background-color: white;
+    padding: 20px;
+    border: 5px ridge #FFA3D6;
+    border-radius: 15px;
+}
+
+#selectDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#highlight {
+    color: #FFA3D6;
+}
+
+.options {
+    font-family: pixel;
+    font-size: 20px;
+    color: black;
+    background-color: #FFA3D6;
+    border: 5px ridge white;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 5px;
+}
+
+.options:hover {
+    opacity: 80%;
+    color: #FFA3D6;
+    background-color: black;
+}
+
+footer {
+    position: fixed;
+    text-align: center;
+    left: -5px;
+    bottom: 0.1px;
+    background-color: black;
+    color: #FFA3D6;
+    font-family: pixel;
+    font-size: 12px;
+    width: 100vw;
+    padding: 10px;
+    opacity: 80%;
+}

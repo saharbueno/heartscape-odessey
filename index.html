@@ -1,0 +1,789 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heartscape Odessey</title>
+    <link rel="Stylesheet" href="styles.css">
+    </head>
+    <body id="body">
+        <div class="hidden">
+            <input type="text" id="gameStateValue" value="none">
+        </div>
+        <div id="start">
+            <h1>Heartscape Odessey!</h1>
+            <p>Welcome to Heartscape Odessey, where you embark on a journey through the diverse landscapes of love. Choose your path and explore the intricate world of relationships as you encounter characters representing different attachment styles. Navigate conversations, make choices, and witness the impact of your decisions on the unfolding story. Will you find harmony or heartache on your quest for understanding? The adventure begins now in Heartscape Odessey.</p>
+            <button id="startGame">Start Game</button>
+        </div>
+        <div id="select" class="hidden">
+            <p id="text"></p>
+            <button class="continue">Continue</button>
+        </div>
+        <div id="scene1" class="hidden">
+            <p id="scene1-text"></p>
+            <button class="continue">Continue</button>
+        </div>
+        <div id="scene2" class="hidden">
+            <div id="scene2Image"></div>
+            <p id="scene2-text"></p>
+            <button class="hidden options o1">Option 1</button>
+            <button class="hidden options o2">Option 2</button>
+            <button class="continue">Continue</button>
+        </div>
+        <div id="scene3" class="hidden">
+            <div id="scene3Image"></div>
+            <p id="scene3-text"></p>
+            <button class="hidden options o1">Option 1</button>
+            <button class="hidden options o2">Option 2</button>
+            <button class="continue">Continue</button>
+        </div>
+        <div id="scene4" class="hidden">
+            <div id="scene4Image"></div>
+            <p id="scene4-text"></p>
+            <button class="hidden options o1">Option 1</button>
+            <button class="hidden options o2">Option 2</button>
+            <button class="continue">Continue</button>
+        </div>
+        <div id="scene5" class="hidden">
+            <div id="scene5Image"></div>
+            <p id="scene5-text"></p>
+            <button class="hidden options o1">Option 1</button>
+            <button class="hidden options o2">Option 2</button>
+            <button class="continue">Continue</button>
+        </div>
+        <div id="ending" class="hidden">
+            <div id="endImage"></div>
+            <p id="ending-text"></p>
+            <button class="hidden options o1">Option 1</button>
+            <button class="hidden options o2">Option 2</button>
+            <button class="continue">Continue</button>
+        </div>
+        <footer>Game by Sahar Bueno-Abdala | Background Art Credit: Noraneko Games | Artwork by PRINCEOFREDROSES | Anime Avatar Creator Game by RINMARU | Heading Font from <a style="color: #FFA3D6;" href="https://fontbundles.net/blushfontco/3142763-pink-hearts-bubbly-retro-hearts-valentine-s-day-fo">here</a></footer>
+    </body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // set game state
+            let gameState = 'start';
+            // initialize bad & good count for ending decision
+            let good = 0;
+            let bad = 0;
+            // get game state div
+            const gameStateValue = document.getElementById('gameStateValue');
+            // grab body element
+            const main = document.getElementById('body');
+            // grab continue buttons
+            const continueBtn = document.querySelectorAll('.continue');
+            // grab option buttons
+            const option1 = document.querySelectorAll('.o1');
+            const option2 = document.querySelectorAll('.o2');
+            // grab scene divs
+            const start = document.getElementById('start');
+            const select = document.getElementById('select');
+            // change bg image to starting image
+            main.style.backgroundImage = "url('assets/start.png')";
+            // grab text element
+            const text = document.getElementById('text');
+            // set choosen guy to none for now
+            let guy = 'none';
+            // initialize attachment style array
+            const guyArr = [{name: 'Oliver', type: 'secure', personality: '♡ Confident<br>♡ Empathetic<br>♡ Emotionally stable<br>♡ Trustworthy<br>♡ Open communication', relationship: '♡ Reliable<br>♡ Supportive<br>♡ Able to express emotions comfortably<br>♡ Values mutual respect and understanding<br>♡ Enjoys spending quality time together',
+            script: [{good: "Oliver listens attentively to you and nods with a soft smile. He says he's nervous too, but that you guys should enjoy the time and try not to act different from usual.", bad: "Since you didn't ask Oliver if you could hold his hand, he was a bit taken aback and asked if you guys could get to know each other a bit more first."},
+            {good: "You and Oliver get closer as he leans over your phone with excited eyes. He asks if he can choose the restaurant to surprise you, he thinks you'll really love it.", bad: "Oliver's smile drops a bit since he was planning on trying to surprise you by going to a semi-fancy restaurant with live music since he knows you love it. However, he still agrees to go where you go"},
+            {good: "Oliver sports a big grin. He thanks you and says you look stunning tonight, making you blush in return.", bad: "Oliver seems a little stunned by your question— he says he has to think a little bit more about that, but he then asks you how classes are."},
+            {good: "Oliver happily accepts your request and suggests taking a scenic route home, enjoying the opportunity to extend your time together. You get butterflies when you look up at him…", bad: "Oliver seems caught off guard by your question and responds with a nervous laugh, unsure how to react to the unexpected comment. Trying to get out of this awkward situation, you get out your phone and tell him the next train leaves in 5 minutes and you have to hurry."}]},
+            
+            {name: 'Finn', type: 'avoidant', personality: '♡ Independent<br>♡ Self-sufficient<br>♡ Emotionally reserved<br>♡ Distant<br>♡ Values personal space', relationship: '♡ Prefers autonomy<br>♡ May struggle with intimacy<br>♡ Tends to avoid emotional discussions<br>♡ May prioritize individual activities over quality time together',
+            script: [{good: "Finn nervously laughs and changes the topic immediately to what you guys were going to do. Even though you could tell he was a little nervous too, you didn't push him to say anything and smoothly continued the conversation.", bad: "Immediately, Finn is startled by your sudden advancement and quickly pulls his hand away. He ignores what just happened and asks about the plans, but you can tell he's extremely uncomfortable."},
+            {good: "Finn seems a bit more relaxed and says if you like it there, then he's sure it'll be good.", bad: "Finn says he's fine with anything."},
+            {good: "Finn's cheeks turn a light shade of pink as he covers his small smile with his hand. He says he doesn't look any different from other days and then makes the conversation about school.", bad: `Finn’s face looks puzzled as he scratches his head. “Uhhhh…. not really sure…”, he stammers out. The conversation dies down again…`},
+            {good: "Finn nods quietly and agrees to accompany you. As you walk together, the moon casts a little light on Finn's face and you see the glimmer of a shy smile.", bad: "Finn hesitates at your comment, avoiding eye contact as he deflects the question with a vague response. Trying to get out of this awkward situation, you get out your phone and tell him the next train leaves in 5 minutes and you have to hurry."}]},
+            
+            {name: 'Leo', type: 'ambivalent', personality: '♡ Intense<br>♡ Passionate<br>♡ Sensitive<br>♡ Moody<br>♡ Seeks validation and reassurance', relationship: '♡ Oscillates between being deeply affectionate and distant<br>♡ Craves closeness but fears rejection<br>♡ May exhibit jealousy or insecurity<br>♡ Requires frequent reassurance',
+            script: [{good: "Leo squeezes your hand tightly and looks down at you with a warm smile. He says he already feels so comfortable with you.", bad: "Leo's smile is replaced by a look of worry. He asks if he did something wrong to make you anxious. You reassure him that you're nervous because you want things to go well. Leo's worried look fades away a bit as he exhales, but it's not 100% gone."},
+            {good: "Leo excitedly searches for the train route to go to the restaurant you chose. He cutely exclaims he really wants to try your favorite dish from the place. You blush and say you guys can share.",bad: "Leo leads you to a bench to decide together and when you sit down, he puts his arm around you. Even though you're happy that he's getting so close to you already, choosing which restaurant to go to took forever since Leo kept asking if you were ok with it 100x. You were hungrier and a bit more annoyed about the situation, but you decided to just calm down."},
+            {good: "With a smug grin and wink, Leo tells you you're looking pretty sexy yourself. Startled, but still flattered, by his impulsive comment, you thank him and ask him about his classes.", bad: "Leo shares extensively about his riskiest behavior, but as he continues sharing he seems to be more and more nervous; he continues asking you if you would do something like that too. Not knowing how to respond, you laugh it off and change the topic, but you get a feeling he's still waiting for something."},
+            {good: "Leo enthusiastically agrees to walk you home, suggesting a longer route to extend your time together. You talk each other's ears off as you slowly get closer and closer until he pulls you in closer with a soft hand on your waist. You look up at him and see he's starting straight but the hint of pink on his cheeks is all too noticeable.", bad: `"What do you mean by that? Are you saying there's something wrong with being single? I thought we were just having a good time,” Leo says. You tell him you were joking and he sighs. Trying to get out of this awkward situation, you get out your phone and tell him the next train leaves in 5 minutes and you have to hurry.`}]},
+            
+            {name: 'Milo', type: 'disorganized', personality: '♡ Unpredictable<br>♡ Chaotic<br>♡ Impulsive<br>♡ Struggles with self-regulation<br>♡ May have unresolved trauma', relationship: '♡ Inconsistent in behavior and emotions<br>♡ May experience frequent mood swings<br>♡ Difficulty maintaining boundaries<br>♡ May require patience and understanding',
+            script: [{good: "Milo is a little startled at first, but he squeezes your hand and giggles nervously. Maybe your impulsive thought was the same as his, you thought to yourself.", bad: "Milo gets a nervous look on his face and bites his lip anxiously. He says he's sorry and that he's not sure how to make it better. You reassure him that you just want it to go good and that there's no pressure and even though his face gets a bit relaxed, he still continues to bite his lip."},
+            {good: "Milo is happy to be impulsive, but every time you suggest something, he doesn't know if he wants that. Milo suggests going to a restaurant he knows well and you agree. You feel a bit annoyed that you guys wasted time, but push that thought away and think of the good food.", bad: "Milo hesitates for a moment, then suggests going to a restaurant he knows well, expressing a preference for familiarity over adventure. You feel a bit disappointed by the lack of spontaneity but decide to go along with his suggestion."},
+            {good: "Milo nervously laughs and thanks you. He says he spent so long trying to choose what to wear and that he hopes he made a good impression. You feel a little flattered and smile, but you feel a little bad that he was so anxious before.", bad: `Milo avoids eye contact and says “Oh, um, well, I've taken a few risks, but they never seem to turn out well. It's complicated." You don't press the issue further and change the topic while Milo continues to avoid your gaze.`},
+            {good: "Milo happily agrees to walk you home, his nervousness evident but overshadowed by his eagerness to please. You both enjoy a cool walk under the glimmering moon of spring as you talk enthusiastically about life, hobbies, and other things." ,bad: "Milo's face turns cold as he spits out “Well I don't know, but I can kinda tell why you are.” Stunned, you go quiet for a few seconds. Then, desperately trying to get out of this awkward situation, you get out your phone and tell him the next train leaves in 5 minutes and you have to hurry."}]},
+            
+            {name: 'Adrian', type: 'reactive', personality: '♡ Reactive<br>♡ Distrustful<br>♡ Defensive<br>♡ Struggles with forming emotional connections<br>♡ May fear abandonment', relationship: '♡ May exhibit defensive behaviors or push people away<br>♡ May have difficulty trusting others<br>♡ May require significant time and effort to build trust and intimacy',
+            script: [{good: "Adrian asks if you think he doesn't like you or something, but before you could respond he shakes his head and tells you to just be yourself. He smiles, so you feel better.", bad: "Adrian instinctively pulls his hand back and asks you what you're trying to do to him. You stammer out that you just thought it would be nice to hold hands. Adrian's hostile face fades away a little as he explains to you that he's not ready. You apologize profusely and try to return to normal conversation, but you could tell you crossed a line."},
+            {good: "Adrian nods, appreciating your initiative, but suggests trying a new restaurant he's heard good things about. You feel a sense of relief that he's feeling ok.", bad: "Adrian seems hesitant and suggests that you choose instead, expressing discomfort with making decisions. You sense his anxiety and decide to ease the situation by suggesting a familiar spot."},
+            {good: `A cute smile appears on Adrian's face as he says "Thanks, but enough about me. What about your outfit?" Happy that he's engaging with you, you guys chat about your outfit, school, and other surface-level things.`, bad: `Adrian's eyes feel like they're burning into yours as he says "Why do you want to know about risks? Are you trying to judge me???” in an agitated tone. Remorseful, you explained you just didn't know what else to say. He calms down a little but still seems on edge after that…`},
+            {good: "Adrian agrees to walk you home, his eyes softening as he redirects the conversation to focus on you. You can tell he's starting to relax a bit more after getting to know you. You both enjoy a calming walk under the glowing moonlight, Adrian's shoulder brushing yours lightly every so often, giving you butterflies.", bad: `As his eyes sharpen and his expression turns sour, Adrian bluntly says “Can you just not say shit like that?” Clearly having crossed a line and desperately trying to get out of this awkward situation, you get out your phone and tell him the next train leaves in 5 minutes and you have to hurry.`}]}];
+
+            const speed = 1; 
+            function write(txt, element) {
+                let i = 0;
+                function typeWriter() {
+                    if (i < txt.length) {
+                        if (txt.charAt(i) === ' ') {
+                            element.innerText += txt.charAt(i);
+                            element.innerHTML += '&nbsp;';
+                        } else if (txt.charAt(i) === '#') {
+                            element.innerHTML += '<br>';
+                        } else {
+                            element.innerText += txt.charAt(i);
+                        }
+                        i++;
+                        setTimeout(typeWriter, speed);
+                    }
+                }
+                typeWriter();
+            }
+
+            // functon to clear text
+            function clearText(element) {
+                element.innerText = '';
+            }
+
+            // start game
+            let startBtn = document.getElementById('startGame');
+            startBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // change bg
+                main.style.backgroundImage = "url('assets/choose-scene.png')";
+                // hide start
+                start.style.display = 'none';
+                // show select
+                select.classList.remove('hidden');
+                select.classList.add('scenes');
+                gameState = 'select';
+
+                // function to run while game is playing
+                if (gameState == 'select') {
+                    let selectTextIndex = 0;
+                    // create array for needed text 
+                    const selectText = ["The sun shines brightly, signifiying the beautiful beginning of spring. You walk to your favorite study cafe slowly, enjoying the gentle rustle of leaves and the distant sounds of birdsong. Lost in your thoughts, you're hardly aware of your surroundings until a sudden movement catches your eye...", 
+                    "A handsome man walks around the corner, his features illuminated by the soft light filtering through the trees. You recognize him as your classmate from your favorite class at college, Love Actually. His eyes meet yours with a curious sparkle, as if he's been waiting for this moment…", "He approaches you…",];
+                    // write to div
+                    write(selectText[selectTextIndex], text);
+                    // handle button clicks to trigger text
+                    continueBtn[0].onclick = (e) => {
+                        if (selectTextIndex < 2) {
+                            clearText(text);
+                            selectTextIndex++;
+                            write(selectText[selectTextIndex], text);
+                        } else {
+                            // hide the continue button 
+                            continueBtn[0].style.display = 'none';
+                            // make the text box hidden
+                            text.style.display = 'none';
+                            // add selection list
+                            const selectDiv = document.createElement('div');
+                            selectDiv.setAttribute('id', 'selectDiv');
+                            const selectP = document.createElement('p');
+                            selectP.innerText = "You've always had interest in a few guys from your class, each having a different allure, but never had the chance to make your move... this is it! Who is the guy who approached you? Choose wisely, love and people are not as surface level as you may think... our childhoods and the way we were cared for play a huge role in shaping who we are and how we love!";
+                            selectDiv.appendChild(selectP);
+                            // create and add buttons
+                            guyArr.forEach((dude) => {
+                                const temp = document.createElement('button');
+                                temp.innerText = `${dude.name}: ${dude.type} attachment style`;
+                                temp.classList.add('selectGuy');
+                                // add event listener so when guy is clicked on, guy for game is set to him and game state is changed
+                                temp.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    guy = dude;
+                                    gameStateValue.value = 'scene1';
+                                    select.style.display = 'none';
+                                    // trigger the change event manually
+                                    gameStateValue.dispatchEvent(new Event('change'));
+                                });
+                                selectDiv.appendChild(temp);
+                            });
+                            select.appendChild(selectDiv);
+                        }
+                    }
+                }
+            });
+
+            // function to detect the changes in game state for gameplay
+            gameStateValue.addEventListener('change', (e) => {
+                gameState = e.target.value;
+                if (gameState == 'scene1') {
+                    // show scene 1
+                    const scene1 = document.getElementById('scene1');
+                    scene1.classList.remove('hidden');
+                    scene1.classList.add('scenes');
+                    // change bg
+                    main.style.backgroundImage = "url('assets/scene1.png')";
+                    // grab text element for scene1
+                    const text1 = document.getElementById('scene1-text');
+                    // variable to count array index
+                    let scene1TextIndex = 0;
+                    // create array for needed text
+                    const scene1Text = [`You: I finally got the courage to ask ${guy.name} out! Now, I just have to figure out what to wear…`,
+                    "?: Hold on! Not so fast! You have to figure out what this guy is actually LIKE first!",
+                    "You: Who’s there??? Who are you??",
+                    `?: Girl don’t worry about who I am right now-- worry about ${guy.name}! Want to know what his attachment style means?`,
+                    `You: uh… I guess?`];
+                    // write to div
+                    write(scene1Text[scene1TextIndex], text1);
+                    // handle button clicks to trigger text
+                    continueBtn[1].onclick = (e) => {
+                        if (scene1TextIndex < scene1Text.length - 1) {
+                            clearText(text1);
+                            scene1TextIndex++;
+                            write(scene1Text[scene1TextIndex], text1);
+                        } else {
+                            text1.innerHTML = `?: Great! Well... Personality Wise, ${guy.name} is:<br><span id="highlight">${guy.personality}</span><br><br>Relationship wise:<br><span id="highlight">${guy.relationship}</span>`;
+                            e.target.innerText = 'Ready for this date?';
+                            e.target.onclick = (e) => {
+                                e.preventDefault();
+                                gameStateValue.value = 'scene2';
+                                scene1.style.display = 'none';
+                                // trigger the change event manually
+                                gameStateValue.dispatchEvent(new Event('change'));
+                            }
+                        }
+                    }
+                } else if (gameState == 'scene2') {
+                    // show scene 2
+                    const scene2 = document.getElementById('scene2');
+                    scene2.classList.remove('hidden');
+                    scene2.classList.add('scenes');
+                    // change bg
+                    main.style.backgroundImage = "url('assets/scene2.png')";
+                    // grab text element for scene 2
+                    const text2 = document.getElementById('scene2-text');
+                    // variable to count array index
+                    let scene2TextIndex = 0;
+                    // create array for needed text
+                    const scene2Text = [`It's finally time for you to meet ${guy.name} at the train station. You're a little nervous but excited for the time you guys will get to spend together.`,
+                    `The afternoon spring sun is beginning to set ever so slightly when you see ${guy.name}... Your heart begins pumping loudly, but you keep your cool and greet him with ease.`, 'After a chat, you want to make some sort of small move. What do you do?'];
+                    // write to div
+                    write(scene2Text[scene2TextIndex], text2);
+                    // handle button clicks to trigger text
+                    continueBtn[2].onclick = (e) => {
+                        if (scene2TextIndex < scene2Text.length - 2) {
+                            clearText(text2);
+                            scene2TextIndex++;
+                            write(scene2Text[scene2TextIndex], text2);
+                        } else {
+                            // write next line
+                            clearText(text2);
+                            scene2TextIndex++;
+                            write(scene2Text[scene2TextIndex], text2);
+                            // show options
+                            option1[0].classList.remove('hidden');
+                            option2[0].classList.remove('hidden');
+                            option1[0].innerText = `Tell ${guy.name} you're a little nervous for the date and laugh nervously.`;
+                            option2[0].innerText =  `Reach out for ${guy.name}'s hand and hold it while looking down and blushing...`;
+                            continueBtn[2].style.display = 'none';
+                            // display the guy 
+                            const scene2Img = document.getElementById('scene2Image');
+                            // dynamically create image
+                            const img = document.createElement('img');
+                            img.style.width = '300px';
+                            img.style.marginBottom = '-20px';
+                            img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-norm.png`;
+                            scene2Img.appendChild(img);
+                            // trigger the guy response
+                            option1[0].onclick = (e) => {
+                                option1[0].style.display = 'none';
+                                option2[0].style.display = 'none';
+                                clearText(text2);
+                                if (guy.name == 'Oliver') {
+                                    write(guy.script[0].good, text2);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Finn') {
+                                    write(guy.script[0].good, text2);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Leo') {
+                                    write(guy.script[0].bad, text2);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Milo') {
+                                    write(guy.script[0].bad, text2);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Adrian') {
+                                    write(guy.script[0].good, text2);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                }
+                                // hide current scene and get new scene
+                                continueBtn[2].style.display = 'block';
+                                continueBtn[2].onclick = (e) => {
+                                    e.preventDefault();
+                                    gameStateValue.value = 'scene3';
+                                    scene2.style.display = 'none';
+                                    // trigger the change event manually
+                                    gameStateValue.dispatchEvent(new Event('change'));
+                                }
+
+                            }
+                            option2[0].onclick = (e) => {
+                                option1[0].style.display = 'none';
+                                option2[0].style.display = 'none';
+                                clearText(text2);
+                                if (guy.name == 'Oliver') {
+                                    write(guy.script[0].bad, text2);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Finn') {
+                                    write(guy.script[0].bad, text2);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Leo') {
+                                    write(guy.script[0].good, text2);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Milo') {
+                                    write(guy.script[0].good, text2);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Adrian') {
+                                    write(guy.script[0].bad, text2);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                }
+                                // hide current scene and get new scene
+                                continueBtn[2].style.display = 'block';
+                                continueBtn[2].onclick = (e) => {
+                                    e.preventDefault();
+                                    gameStateValue.value = 'scene3';
+                                    scene2.style.display = 'none';
+                                    // trigger the change event manually
+                                    gameStateValue.dispatchEvent(new Event('change'));
+                                }
+                            }
+                        }
+                    }
+
+                } else if (gameState == 'scene3') {
+                    // show scene 3
+                    const scene3 = document.getElementById('scene3');
+                    scene3.classList.remove('hidden');
+                    scene3.classList.add('scenes');
+                    // change bg
+                    main.style.backgroundImage = "url('assets/scene3.png')";
+                    // grab text element for scene 2
+                    const text3 = document.getElementById('scene3-text');
+                    // variable to count array index
+                    let scene3TextIndex = 0; 
+                    // create array for needed text
+                    const scene3Text = ['After that little moment, you guys decide to go get dinner...', `You had a restaurant in mind that you really wanted to show him, but you also wanted to know if ${guy.name} wanted anything in particular.`, 'What do you say?'];
+                    // write to div
+                    write(scene3Text[scene3TextIndex], text3);
+                    // handle button clicks to trigger text
+                    continueBtn[3].onclick = (e) => {
+                        if (scene3TextIndex < scene3Text.length - 2) {
+                            clearText(text3);
+                            scene3TextIndex++;
+                            write(scene3Text[scene3TextIndex], text3);
+                        } else {
+                            // write next line
+                            clearText(text3);
+                            scene3TextIndex++;
+                            write(scene3Text[scene3TextIndex], text3);
+                            // show options
+                            option1[1].classList.remove('hidden');
+                            option2[1].classList.remove('hidden');
+                            option1[1].innerText = `Tell him that you guys should choose somewhere to go together!`;
+                            option2[1].innerText =  `Suggest the restaurant you had in mind and tell him you want to show him the food.`;
+                            continueBtn[3].style.display = 'none';
+                            // display the guy 
+                            const scene3Img = document.getElementById('scene3Image');
+                            // dynamically create image
+                            const img = document.createElement('img');
+                            img.style.width = '300px';
+                            img.style.marginBottom = '-20px';
+                            img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-norm.png`;
+                            scene3Img.appendChild(img);
+                            // trigger the guy response
+                            option1[1].onclick = (e) => {
+                                option1[1].style.display = 'none';
+                                option2[1].style.display = 'none';
+                                clearText(text3);
+                                if (guy.name == 'Oliver') {
+                                    write(guy.script[1].good, text3);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Finn') {
+                                    write(guy.script[1].bad, text3);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Leo') {
+                                    write(guy.script[1].bad, text3);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Milo') {
+                                    write(guy.script[1].good, text3);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Adrian') {
+                                    write(guy.script[1].bad, text3);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                }
+                                // hide current scene and get new scene
+                                continueBtn[3].style.display = 'block';
+                                continueBtn[3].onclick = (e) => {
+                                    e.preventDefault();
+                                    gameStateValue.value = 'scene4';
+                                    scene3.style.display = 'none';
+                                    // trigger the change event manually
+                                    gameStateValue.dispatchEvent(new Event('change'));
+                                }
+                            }
+                            option2[1].onclick = (e) => {
+                                option1[1].style.display = 'none';
+                                option2[1].style.display = 'none';
+                                clearText(text3);
+                                if (guy.name == 'Oliver') {
+                                    write(guy.script[1].bad, text3);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Finn') {
+                                    write(guy.script[1].good, text3);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Leo') {
+                                    write(guy.script[1].good, text3);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Milo') {
+                                    write(guy.script[1].bad, text3);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Adrian') {
+                                    write(guy.script[1].good, text3);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                }
+                                // hide current scene and get new scene
+                                continueBtn[3].style.display = 'block';
+                                continueBtn[3].onclick = (e) => {
+                                    e.preventDefault();
+                                    gameStateValue.value = 'scene4';
+                                    scene3.style.display = 'none';
+                                    // trigger the change event manually
+                                    gameStateValue.dispatchEvent(new Event('change'));
+                                }
+                            }
+                        }
+                    }
+                } else if (gameState == 'scene4') {
+                    // show scene 4
+                    const scene4 = document.getElementById('scene4');
+                    scene4.classList.remove('hidden');
+                    scene4.classList.add('scenes');
+                    // change bg
+                    main.style.backgroundImage = "url('assets/scene4.png')";
+                    // grab text element for scene 2
+                    const text4 = document.getElementById('scene4-text');
+                    // variable to count array index
+                    let scene4TextIndex = 0; 
+                    // create array for needed text
+                    const scene4Text = [`You and ${guy.name} arrive at the restaurant and you both look in awe (and lots of hunger) at what awaits you.`, `You enter inside with ${guy.name} and the waiter seats you guys at your table immediately. You both take the menu from the waiter and...`, `...It's a little awkward.`, `What should you say to start some conversation?`];
+                    // write to div
+                    write(scene4Text[scene4TextIndex], text4);
+                    // handle button clicks to trigger text
+                    continueBtn[4].onclick = (e) => {
+                        if (scene4TextIndex < scene4Text.length - 2) {
+                            clearText(text4);
+                            scene4TextIndex++;
+                            write(scene4Text[scene4TextIndex], text4);
+                        } else {
+                            // write next line
+                            clearText(text4);
+                            scene4TextIndex++;
+                            write(scene4Text[scene4TextIndex], text4);
+                            // show options
+                            option1[2].classList.remove('hidden');
+                            option2[2].classList.remove('hidden');
+                            option1[2].innerText = `Soo… what’s the biggest risk you’ve ever taken?!`;
+                            option2[2].innerText =  `I like your outfit today ${guy.name}!`;
+                            continueBtn[4].style.display = 'none';
+                            // display the guy 
+                            const scene4Img = document.getElementById('scene4Image');
+                            // dynamically create image
+                            const img = document.createElement('img');
+                            img.style.width = '300px';
+                            img.style.marginBottom = '-20px';
+                            img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-norm.png`;
+                            scene4Img.appendChild(img);
+                            // trigger the guy response
+                            option1[2].onclick = (e) => {
+                                option1[2].style.display = 'none';
+                                option2[2].style.display = 'none';
+                                clearText(text4);
+                                if (guy.name == 'Oliver') {
+                                    write(guy.script[2].bad, text4);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Finn') {
+                                    write(guy.script[2].bad, text4);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Leo') {
+                                    write(guy.script[2].bad, text4);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Milo') {
+                                    write(guy.script[2].bad, text4);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Adrian') {
+                                    write(guy.script[2].bad, text4);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                }
+                                // hide current scene and get new scene
+                                continueBtn[4].style.display = 'block';
+                                continueBtn[4].onclick = (e) => {
+                                    e.preventDefault();
+                                    gameStateValue.value = 'scene5';
+                                    scene4.style.display = 'none';
+                                    // trigger the change event manually
+                                    gameStateValue.dispatchEvent(new Event('change'));
+                                }
+                            }
+                            option2[2].onclick = (e) => {
+                                option1[2].style.display = 'none';
+                                option2[2].style.display = 'none';
+                                clearText(text4);
+                                if (guy.name == 'Oliver') {
+                                    write(guy.script[2].good, text4);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Finn') {
+                                    write(guy.script[2].good, text4);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Leo') {
+                                    write(guy.script[2].good, text4);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Milo') {
+                                    write(guy.script[2].good, text4);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Adrian') {
+                                    write(guy.script[2].good, text4);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                }
+                                // hide current scene and get new scene
+                                continueBtn[4].style.display = 'block';
+                                continueBtn[4].onclick = (e) => {
+                                    e.preventDefault();
+                                    gameStateValue.value = 'scene5';
+                                    scene4.style.display = 'none';
+                                    // trigger the change event manually
+                                    gameStateValue.dispatchEvent(new Event('change'));
+                                }
+                            }
+                        }
+                    }
+                } else if (gameState == 'scene5') {
+                    // show scene 5
+                    const scene5 = document.getElementById('scene5');
+                    scene5.classList.remove('hidden');
+                    scene5.classList.add('scenes');
+                    // change bg
+                    main.style.backgroundImage = "url('assets/scene5.png')";
+                    // grab text element for scene 2
+                    const text5 = document.getElementById('scene5-text');
+                    // variable to count array index
+                    let scene5TextIndex = 0;
+                    // create array for needed text
+                    const scene5Text = [`With the dinner date ending relatively well, you and ${guy.name} decide to go to an ice cream shop for some yummy dessert to end off the night.`, `After chatting for a bit and finishing your ice cream, you and ${guy.name} decide to start walking back to the train station so you both can get home.`, "After realizing that you will have to seperate soon, you wonder what you should say before the date ends...", "What do you say?"];
+                    // write to div
+                    write(scene5Text[scene5TextIndex], text5);
+                    // handle button clicks to trigger text
+                    continueBtn[5].onclick = (e) => {
+                        if (scene5TextIndex < scene5Text.length - 2) {
+                            clearText(text5);
+                            scene5TextIndex++;
+                            write(scene5Text[scene5TextIndex], text5);
+                        } else {
+                            // write next line
+                            clearText(text5);
+                            scene5TextIndex++;
+                            write(scene5Text[scene5TextIndex], text5);
+                            // show options
+                            option1[3].classList.remove('hidden');
+                            option2[3].classList.remove('hidden');
+                            option1[3].innerText = `How are you even single? I had such a great time tonight.`;
+                            option2[3].innerText =  `I was wondering if you could walk me home after we get off the train?`;
+                            continueBtn[5].style.display = 'none';
+                            // display the guy 
+                            const scene5Img = document.getElementById('scene5Image');
+                            // dynamically create image
+                            const img = document.createElement('img');
+                            img.style.width = '300px';
+                            img.style.marginBottom = '-20px';
+                            img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-norm.png`;
+                            scene5Img.appendChild(img);
+                            // trigger the guy response
+                            option1[3].onclick = (e) => {
+                                option1[3].style.display = 'none';
+                                option2[3].style.display = 'none';
+                                clearText(text5);
+                                if (guy.name == 'Oliver') {
+                                    write(guy.script[3].bad, text5);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Finn') {
+                                    write(guy.script[3].bad, text5);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Leo') {
+                                    write(guy.script[3].bad, text5);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Milo') {
+                                    write(guy.script[3].bad, text5);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                } else if (guy.name == 'Adrian') {
+                                    write(guy.script[3].bad, text5);
+                                    bad++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-upset.png`;
+                                }
+                                // hide current scene and get new scene
+                                continueBtn[5].style.display = 'block';
+                                continueBtn[5].onclick = (e) => {
+                                    e.preventDefault();
+                                    gameStateValue.value = 'ending';
+                                    scene5.style.display = 'none';
+                                    // trigger the change event manually
+                                    gameStateValue.dispatchEvent(new Event('change'));
+                                }
+                            }
+                            option2[3].onclick = (e) => {
+                                option1[3].style.display = 'none';
+                                option2[3].style.display = 'none';
+                                clearText(text5);
+                                if (guy.name == 'Oliver') {
+                                    write(guy.script[3].good, text5);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Finn') {
+                                    write(guy.script[3].good, text5);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Leo') {
+                                    write(guy.script[3].good, text5);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Milo') {
+                                    write(guy.script[3].good, text5);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                } else if (guy.name == 'Adrian') {
+                                    write(guy.script[3].good, text5);
+                                    good++;
+                                    img.src = `assets/${guy.name.toLowerCase()}/${guy.name.toLowerCase()}-talk.png`;
+                                }
+                                // hide current scene and get new scene
+                                continueBtn[5].style.display = 'block';
+                                continueBtn[5].onclick = (e) => {
+                                    e.preventDefault();
+                                    gameStateValue.value = 'ending';
+                                    scene5.style.display = 'none';
+                                    // trigger the change event manually
+                                    gameStateValue.dispatchEvent(new Event('change'));
+                                }
+                            }
+                        }
+                    }
+                } else if (gameState == 'ending') {
+                    let decision;
+                    // calculate if the ending is good or bad...
+                    if (good > bad) {
+                        decision = 'good';
+                    } else if (good < bad) {
+                        decision = 'bad';
+                    } else if (good == bad) {
+                        decision = 'neutral';
+                    }
+                    // show ending
+                    const ending = document.getElementById('ending');
+                    ending.classList.remove('hidden');
+                    ending.classList.add('scenes');
+                    // change bg
+                    main.style.backgroundImage = "url('assets/ending.png')";
+                    // grab text element for scene 2
+                    const textEnd = document.getElementById('ending-text');
+                    // variable to count array index
+                    let endTextIndex = 0;
+                    // create array for needed text
+                    const goodText = [`After an exciting and fun night, you and ${guy.name} are still destined to part.`, "You slowly turn to face each other and there's a quiet pause as you look up into his eyes as they glimmer under the warm starlight of Spring...", `${guy.name} walks closer to you. Your eyes stay fixed on his as he continues to step closer...`, "You're so close now that you can see every eyelash, every mole, every little scar... and then he leans in.", "...You kiss under the moonlight..."];
+                    const badText = [`After an... eventful... night to say the least, you and ${guy.name} reached the point where you had to part.`, `${guy.name} turns to you with a certain look on his face...`, `As you stare at his eyes glistening under the moonlight, Spring starts to feel like Summer as you wait for what he's about to say.`, `"I had fun."`, `"...But this isn't going to work out between us."`];
+                    const neutralText = [`As the evening winds down, you and ${guy.name} find yourselves lost in thought, contemplating the events of the night.`, "A comfortable silence envelops you both as you stroll through the dimly lit streets, the cool breeze carrying whispers of possibility.", "The city lights twinkle above, casting a soft glow on your faces as you share anecdotes and laughter, each moment tinged with a hint of mystery.", `With a final glance and a subtle smile, you bid ${guy.name} farewell, uncertain of what tomorrow may bring but grateful for the memories made tonight.`, "As you part ways, there's a lingering sense of curiosity in the air, a silent question left unanswered, waiting to unfold in the days to come.", "The night draws to a close, leaving you with a sense of intrigue and wonder, wondering what could have been and what still may be..."];
+                    // write to div
+                    if (decision == 'good') {
+                        write(goodText[endTextIndex], textEnd);
+                    } else if (decision == 'bad') {
+                        write(badText[endTextIndex], textEnd);
+                    } else {
+                        write(neutralText[endTextIndex], textEnd)
+                    }
+                    // handle button clicks to trigger text
+                    continueBtn[6].onclick = (e, ) => {
+                        if (decision == 'good') {
+                            if (endTextIndex < goodText.length - 2) {
+                                clearText(textEnd);
+                                endTextIndex++;
+                                write(goodText[endTextIndex], textEnd);
+                            } else {
+                                clearText(textEnd);
+                                endTextIndex++;
+                                write(goodText[endTextIndex], textEnd);
+                                const endingH1 = document.createElement('h1');
+                                endingH1.style.borderStyle = 'none';
+                                endingH1.style.backgroundColor = 'transparent';
+                                endingH1.innerText = 'GOOD ENDING!';
+                                ending.insertBefore(endingH1, ending.firstChild);
+                                continueBtn[6].style.display = 'none';
+                            }
+                        } else if (decision == 'bad') {
+                            if (endTextIndex < badText.length - 2) {
+                                clearText(textEnd);
+                                endTextIndex++;
+                                write(badText[endTextIndex], textEnd);
+                            } else {
+                                clearText(textEnd);
+                                endTextIndex++;
+                                write(badText[endTextIndex], textEnd);
+                                const endingH1 = document.createElement('h1');
+                                endingH1.style.borderStyle = 'none';
+                                endingH1.style.backgroundColor = 'transparent';
+                                endingH1.innerText = 'BAD ENDING!';
+                                ending.insertBefore(endingH1, ending.firstChild);
+                                continueBtn[6].style.display = 'none';
+                            }
+                        } else {
+                            if (endTextIndex < neutralText.length - 2) {
+                                clearText(textEnd);
+                                endTextIndex++;
+                                write(neutralText[endTextIndex], textEnd);
+                            } else {
+                                clearText(textEnd);
+                                endTextIndex++;
+                                write(neutralText[endTextIndex], textEnd);
+                                const endingH1 = document.createElement('h1');
+                                endingH1.style.borderStyle = 'none';
+                                endingH1.style.backgroundColor = 'transparent';
+                                endingH1.innerText = 'NEUTRAL ENDING!';
+                                ending.insertBefore(endingH1, ending.firstChild);
+                                continueBtn[6].style.display = 'none';
+
+                            }
+                        }
+
+                    }
+                }
+            })
+        });
+    </script>
+</html>
